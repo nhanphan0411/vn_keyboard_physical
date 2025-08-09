@@ -1,15 +1,13 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+// Remove Geist imports and import Epilogue instead
+import { Epilogue } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+// Define the Epilogue font and specify the weights you want to use
+const epilogue = Epilogue({
+  variable: "--font-epilogue",
   subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  weight: ["400", "700"], // Use the weights you imported
 });
 
 export const metadata: Metadata = {
@@ -24,9 +22,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={`${epilogue.variable} antialiased`}>
         {children}
       </body>
     </html>

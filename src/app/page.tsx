@@ -108,9 +108,7 @@ export default function SyllableMatrix() {
   // ========================== RANDOM SYLLABLE =========================== //
   // Placeholder data for the consonants and vowels
   const preConsonants = ["b", "c", "ch", "d", "đ", "g", "gh", "gi", "h", "k", "kh", "l", "m", "n", "ng", "ngh", "nh", "p", "ph", "qu", "r", "s", "t", "th", "tr", "v", "x"];
-  const vowels = ['a', 'ă', 'â', 'e', 'ê', 'i', 'o', 'ô', 'ơ', 'u', 'ư', 'y', 'aa', 'aă', 'aâ', 'ae', 'aê', 'ai', 'ao', 'aô', 'aơ', 'au', 'aư', 'ay', 'ăa', 'ăă', 'ăâ', 'ăe', 'ăê', 'ăi', 'ăo', 'ăô', 'ăơ', 'ău', 'ăư', 'ăy', 'âa', 'âă', 'ââ', 'âe', 'âê', 'âi', 'âo', 'âô', 'âơ', 'âu', 'âư', 'ây', 'ea', 'eă', 'eâ', 'ee', 'eê', 'ei', 'eo', 'eô', 'eơ', 'eu', 'eư', 'ey', 'êa', 'êă', 'êâ', 'êe', 'êê', 'êi', 'êo', 'êô', 'êơ', 'êu', 'êư', 'êy', 'ia', 'iă', 'iâ', 'ie', 'iê', 'ii', 'io', 'iô', 'iơ', 'iu', 'iư', 'iy', 'oa', 'oă', 'oâ', 'oe', 'oê', 'oi', 'oo', 'oô', 'oơ', 'ou', 'oư', 'oy', 'ôa', 'ôă', 'ôâ', 'ôe', 'ôê', 'ôi', 'ôo', 'ôô', 'ôơ', 'ôu', 'ôư', 'ôy', 'ơa', 'ơă', 'ơâ', 'ơe', 'ơê', 'ơi', 'ơo', 'ơô', 'ơơ', 'ơu', 'ơư', 'ơy', 'ua', 'uă', 'uâ', 'ue', 'uê', 'ui', 'uo', 'uô', 'uơ', 'uu', 'uư', 'uy', 'ưa', 'ưă', 'ưâ', 'ưe', 'ưê', 'ưi', 'ưo', 'ưô', 'ươ', 'ưu', 'ưư', 'ưy', 'ya', 'yă', 'yâ', 'ye', 'yê', 'yi', 'yo', 'yô', 'yơ', 'yu', 'yư', 'yy', 'iêu', 'oao', 'oeo', 'oai', 'oay', 'uây', 'uôi', 'uya', 'uyu', 'uyê', 'ươi', 'ươu', 'yêu']
-
-;
+  const vowels = ['a', 'ă', 'â', 'e', 'ê', 'i', 'o', 'ô', 'ơ', 'u', 'ư', 'y', 'aa', 'aă', 'aâ', 'ae', 'aê', 'ai', 'ao', 'aô', 'aơ', 'au', 'aư', 'ay', 'ăa', 'ăă', 'ăâ', 'ăe', 'ăê', 'ăi', 'ăo', 'ăô', 'ăơ', 'ău', 'ăư', 'ăy', 'âa', 'âă', 'ââ', 'âe', 'âê', 'âi', 'âo', 'âô', 'âơ', 'âu', 'âư', 'ây', 'ea', 'eă', 'eâ', 'ee', 'eê', 'ei', 'eo', 'eô', 'eơ', 'eu', 'eư', 'ey', 'êa', 'êă', 'êâ', 'êe', 'êê', 'êi', 'êo', 'êô', 'êơ', 'êu', 'êư', 'êy', 'ia', 'iă', 'iâ', 'ie', 'iê', 'ii', 'io', 'iô', 'iơ', 'iu', 'iư', 'iy', 'oa', 'oă', 'oâ', 'oe', 'oê', 'oi', 'oo', 'oô', 'oơ', 'ou', 'oư', 'oy', 'ôa', 'ôă', 'ôâ', 'ôe', 'ôê', 'ôi', 'ôo', 'ôô', 'ôơ', 'ôu', 'ôư', 'ôy', 'ơa', 'ơă', 'ơâ', 'ơe', 'ơê', 'ơi', 'ơo', 'ơô', 'ơơ', 'ơu', 'ơư', 'ơy', 'ua', 'uă', 'uâ', 'ue', 'uê', 'ui', 'uo', 'uô', 'uơ', 'uu', 'uư', 'uy', 'ưa', 'ưă', 'ưâ', 'ưe', 'ưê', 'ưi', 'ưo', 'ưô', 'ươ', 'ưu', 'ưư', 'ưy', 'ya', 'yă', 'yâ', 'ye', 'yê', 'yi', 'yo', 'yô', 'yơ', 'yu', 'yư', 'yy', 'iêu', 'oao', 'oeo', 'oai', 'oay', 'uây', 'uôi', 'uya', 'uyu', 'uyê', 'ươi', 'ươu', 'yêu'];
   const postConsonants = ["c", "ch", "m", "n", "ng", "nh", "p", "t"];
   const tones = ["ngang", "sac", "huyen", "hoi", "nga", "nang"];
   function getRandom<T>(arr: T[]): T {
@@ -327,42 +325,14 @@ const generateRandomWordFromDictionary = () => {
         <h1><i>MAKE A VIET SYLLABLE.</i></h1>
 
         <div id="guide" className="py-1">
-          <div className="flex w-full gap-1 mt-4">
-            <div className="w-1/4 bg-gray-200 p-1 rounded text-center">
-            1. Pick a Pre-consonant (left yellow keys)
-            <br /><br />
-              <img src="pre.png"></img>
-            </div>
-            <div className="w-1/4 bg-gray-200 p-1 rounded text-center">
-            2. Pick a Vowel.
-            <br /><br /><br /><br />
-            <img src="singledouble.png"></img>
-            <p className="text-start">a normal single/double vowels</p>
-            <img src="triple.png" width="70%"></img>
-            <p>a triple vowels</p>
-            <img src="blank.png" width="50%"></img>
-            <p>or a vowel combination that can be made but not yet in the dictionary </p>
-            </div>
-            <div className="w-1/4 bg-gray-200 p-1 rounded text-center">
-            3. Pick a Tone.
-            <br /><br /><br /><br />
-            <img src="tone.png" width="50%"></img>
-            </div>
-            <div className="w-1/4 bg-gray-200 p-1 rounded text-center">
-            4. Pick a Post-consonant (right yellow keys)
-            <br /><br />
-            <img src="post.png" width=""></img>
-            </div>
-          </div>
+          <img src="guide.svg"></img>
         </div>
 
 
-        <div id="project_description">
-          <p>What you are seeing is a Vietnamese keyboard that based on <b>syllables</b>.</p>
-          <p>Despite its alphabetic appearance, the structure of Vietnamese is strictly based on the structure of PRE_CONSONANT + VOWELS + POST_CONSONANT</p>
-          <p>In 2024, Nhan Phan & Yui Nguyen started a research into the monosyllabism of Vietnamese, which condensed into this keyboard prototype. The project later on continues and interprete
-            the topic (syllable - meaning - feeling) into 3 other artworks: Xác Âm (the metal piece in front of you), để quá khứ sẽ tiếp diễn (the dual screening to your right), and bên kia của vần (the zine display to your left).
-            You can read the entire project at codesurfing.club/OurVietnameseProject
+        <div id="project_description" className="rounded border-gray-300 py-2">
+          <p>Despite its alphabetic appearance, the structure of Vietnamese is deeply rooted in the structure of <b>PRE_CONSONANT + VOWELS + POST_CONSONANT</b></p>
+          <p>This keyboard is an attempt to use our language in a more intuitive way, a way that treasure the vastness of our syllables, which bears the sound, the feeling, 
+            and the story of the Vietnamese. You can read the entire project at <b>codesurfing.club/OurVietnameseProject.</b>
           </p>
         </div>
 
@@ -370,7 +340,7 @@ const generateRandomWordFromDictionary = () => {
       </div>
 
       {/* Right panel */}
-      <div id="right" className="w-1/2 p-2 flex flex-col gap-2">
+      <div id="right" className="w-1/2 p-2 flex flex-col gap-3">
         <div id="inputBox" className="h-1/5 bg-white border-1 rounded border-gray-300 p-2 flex flex-col gap-2">
           <input
             type="text"
@@ -379,7 +349,7 @@ const generateRandomWordFromDictionary = () => {
             placeholder="Type syllable..."
             className="border border-gray-400 rounded px-2 py-1 w-full"
           />
-          <div id="formedSyllable" className=" text-center flex flex-row">
+          <div id="formedSyllable" className=" text-center flex flex-row p-2">
             <h1>{syllable}</h1>
             <button
               className="ml-2 px-2 py-1 rounded action-btn"
@@ -410,8 +380,8 @@ const generateRandomWordFromDictionary = () => {
                     setSelectedIndex(resultIndex);
                   }}
                   className={
-                    `cursor-pointer hover:underline p-1 rounded transition-colors ${
-                      selectedIndex === resultIndex ? 'bg-cyan-200' : ''
+                    `cursor-pointer hover:underline p-1 rounded transition-colors text-xl ${
+                      selectedIndex === resultIndex ? 'bg-blue-300' : ''
                     }`
                   }>
                   {word.replace(/_/g, " ").trim()}
@@ -421,9 +391,9 @@ const generateRandomWordFromDictionary = () => {
           ))}
         </div>
 
-        <div id="meaning" className="h-2/5 bg-white rounded p-2 flex flex-col gap-1 overflow-y-auto border border-gray-300">
+        <div id="meaning" className="h-2/5 bg-gray-100 rounded p-2 flex flex-col gap-1 overflow-y-auto border border-gray-300">
           {displayDescriptions.map((description, index) => (
-            <p key={index} className="text-m mb-2">{description}</p>
+            <p key={index} className="text-xl mb-2">{description}</p>
           ))}
         </div>
       </div>
