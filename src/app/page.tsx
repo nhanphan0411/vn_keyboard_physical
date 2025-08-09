@@ -326,12 +326,12 @@ const generateRandomWordFromDictionary = () => {
         <h1><i>MAKE A VIET SYLLABLE.</i></h1>
 
         <div id="guide" className="py-1">
-          <img src="guide.svg"></img>
+          <img src="guide.svg" width="100%"></img>
         </div>
 
 
         <div id="project_description" className="rounded border-gray-300 py-2">
-          <p>Despite its alphabetic appearance, the structure of Vietnamese is deeply rooted in the structure of <b>PRE_CONSONANT + VOWELS + POST_CONSONANT</b></p>
+          <p>Despite its alphabetic appearance, the structure of Vietnamese is deeply rooted in the structure of <br/><b>PRE_CONSONANT + VOWELS + POST_CONSONANT</b></p>
           <p>This keyboard is an attempt to use our language in a more intuitive way, a way that treasure the vastness of our syllables, which bears the sound, the feeling, 
             and the story of the Vietnamese. You can read the entire project at <b>codesurfing.club/OurVietnameseProject.</b>
           </p>
