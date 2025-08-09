@@ -238,6 +238,7 @@ const generateRandomWordFromDictionary = () => {
         setDisplayDescriptions(formattedDescriptions);
         setSelectedWord(word);
         setSelectedIndex(index);
+        console.log(selectedWord)
 
         // Scroll the selected item into view
         const selectedElement = searchResultsRef.current?.children[index];
