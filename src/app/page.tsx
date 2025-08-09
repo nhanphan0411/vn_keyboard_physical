@@ -320,7 +320,7 @@ const generateRandomWordFromDictionary = () => {
 
   return (
 
-    <div className="flex h-screen text-sm p-2 gap-x-2 bg-black text-white">
+    <div className="flex h-screen text-sm p-1 gap-x-2 bg-black text-white">
       {/* Left panel */}
       <div id="left" className="w-1/2 p-2 rounded flex flex-col gap-1">
         <h1><i>MAKE A VIET SYLLABLE.</i></h1>
@@ -341,7 +341,7 @@ const generateRandomWordFromDictionary = () => {
       </div>
 
       {/* Right panel */}
-      <div id="right" className="w-1/2 p-2 flex flex-col gap-3 text-black">
+      <div id="right" className="w-1/2 p-2 m-1 flex flex-col gap-3 text-black">
         <div id="inputBox" className="h-1/5 bg-white border-1 rounded border-gray-300 p-2 flex flex-col gap-2">
           <input
             type="text"
