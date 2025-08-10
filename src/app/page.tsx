@@ -341,7 +341,11 @@ const generateRandomWordFromDictionary = () => {
       // When the '@' key is pressed, we process the macro string.
       if (key === "@") {
         if (macroString.startsWith("PRE_")) {
-          setPre(macroString.substring(4));
+          if (macroString === "PRE_d9") {
+            setPre("đ")
+          } else {
+            setPre(macroString.substring(4));
+          }
         } else if (macroString.startsWith("VOW_")) {
           const vow_ = parseVietnameseString(macroString.substring(4));
           setVow(vow_);
@@ -351,6 +355,7 @@ const generateRandomWordFromDictionary = () => {
         }
         // Reset the macro string after processing.
         setMacroString("");
+        console.log(macroString)
         return;
       }
       
