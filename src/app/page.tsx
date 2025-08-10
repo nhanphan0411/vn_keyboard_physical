@@ -305,15 +305,16 @@ const parseVietnameseString = (rawString: string) => {
       const key = event.key;
 
       // Check if a macro is being typed
-      if (macroString) {
+      if (macroString && key.length === 1) { // Check for single character keys to avoid capturing 'Shift'
         event.preventDefault();
         setMacroString(prev => prev + key);
         return;
       }
       
-      // Prevent default browser behavior for macro-related keys
+      // Prevent default browser behavior for random and macro-related keys
       if (
-        (key === "Shift" && (event.location === 1 || event.location === 2)) ||
+        key === "\\" ||
+        key === "/" ||
         key === "ArrowUp" ||
         key === "ArrowDown" ||
         key === "Backspace" ||
@@ -325,14 +326,14 @@ const parseVietnameseString = (rawString: string) => {
         event.preventDefault();
       }
 
-      // Handle random syllable generation with Left Shift
-      if (key === "Shift" && event.location === 1) {
+      // Handle random syllable generation with the "\" key
+      if (key === "\\") {
         generateRandomSyllable();
         return;
       }
 
-      // Handle smart random word generation with Right Shift
-      if (key === "Shift" && event.location === 2) {
+      // Handle smart random word generation with the "/" key
+      if (key === "/") {
         generateRandomWordFromDictionary();
         return;
       }
@@ -352,17 +353,17 @@ const parseVietnameseString = (rawString: string) => {
       }
 
       // Handle macro completion
-      if (macroString.startsWith("PRE_")) {
+      if (macroString.startsWith("PRE_") && key === "Backspace") { // Backspace to complete the macro
         setPre(macroString.substring(4));
         setMacroString("");
         return;
-      } else if (macroString.startsWith("VOW_")) {
+      } else if (macroString.startsWith("VOW_") && key === "Backspace") {
         const vow_ = parseVietnameseString(macroString.substring(4));
         setVow(vow_);
         setTone("ngang");
         setMacroString("");
         return;
-      } else if (macroString.startsWith("POS_")) {
+      } else if (macroString.startsWith("POS_") && key === "Backspace") {
         setPost(macroString.substring(4));
         setMacroString("");
         return;
