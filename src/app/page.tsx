@@ -46,7 +46,7 @@ export default function SyllableMatrix() {
     "ơ": { "sac": "ớ", "huyen": "ờ", "hoi": "ở", "nga": "ỡ", "nang": "ợ", "ngang": "ơ" },
     "u": { "sac": "ú", "huyen": "ù", "hoi": "ủ", "nga": "ũ", "nang": "ụ", "ngang": "u" },
     "ư": { "sac": "ứ", "huyen": "ừ", "hoi": "ử", "nga": "ữ", "nang": "ự", "ngang": "ư" },
-    "y": { "sac": "ý", "huyen": "ỳ", "hoi": "ỉ", "nga": "ỹ", "nang": "ỵ", "ngang": "y" },
+    "y": { "sac": "ý", "huyen": "ỳ", "hoi": "ỷ", "nga": "ỹ", "nang": "ỵ", "ngang": "y" },
   };
 
   const reverseToneMap = Object.entries(toneMap).reduce((acc, [base, tones]) => {
@@ -68,7 +68,23 @@ export default function SyllableMatrix() {
     if (len === 1) {
       targetIndex = 0;
     } else if (len === 2) {
-      targetIndex = (chars[0] === "u" || plainVowel === "iê" || plainVowel === "oa" || plainVowel === "ươ") ? 1 : 0;
+      if (
+        plainVowel === "uâ" ||
+        plainVowel === "uê" ||
+        plainVowel === "uơ" ||
+        plainVowel === "uy" ||
+        plainVowel === "iê" ||
+        plainVowel === "oa" ||
+        plainVowel === "oă" ||
+        plainVowel === "oâ" ||
+        plainVowel === "oe" ||
+        plainVowel === "ươ" ||
+        plainVowel === "yê"
+      ) {
+        targetIndex = 1;
+      } else {
+        targetIndex = 0;
+      }
     } else if (len === 3) {
       if (plainVowel === "uyê") {
         targetIndex = 2;
