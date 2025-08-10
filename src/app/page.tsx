@@ -375,7 +375,7 @@ const generateRandomWordFromDictionary = () => {
         } else if (macroString.startsWith("POS_")) {
           const posPart = macroString.substring(4);
           if (posPart != post) {
-            setPost(post);
+            setPost(posPart);
           }
           
         } else if (macroString.startsWith("TONE_")) {
