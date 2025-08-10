@@ -2,9 +2,7 @@
 import { useState, useEffect, useRef } from "react";
 import { fetchDictionary } from "./components/dictParser";
 
-
 export default function SyllableMatrix() {
-
   type DictionaryEntry = {
     word: string;
     _word_: string;
@@ -33,6 +31,7 @@ export default function SyllableMatrix() {
   const [post, setPost] = useState("");
   const [tone, setTone] = useState("ngang");
   const [syllable, setSyllable] = useState("");
+  const [macroString, setMacroString] = useState("");
 
   // ============================== TONE =============================== //
   const toneMap: Record<string, Record<string, string>> = {
@@ -305,52 +304,90 @@ const parseVietnameseString = (rawString: string) => {
     const handleKeyDown = (event: KeyboardEvent) => {
       const key = event.key;
 
+      // Check if a macro is being typed
+      if (macroString) {
+        event.preventDefault();
+        setMacroString(prev => prev + key);
+        return;
+      }
+      
+      // Prevent default browser behavior for macro-related keys
+      if (
+        key === "Shift" ||
+        key === "ArrowRight" ||
+        key === "ArrowUp" ||
+        key === "ArrowDown" ||
+        key === "Backspace" ||
+        key.startsWith("PRE_") || // This is no longer needed but for safety
+        key.startsWith("VOW_") ||
+        key.startsWith("POS_") ||
+        key.startsWith("TONE_")
+      ) {
+        event.preventDefault();
+      }
+
+      // Start new macro sequences
+      if (key === "p" && event.shiftKey) { // Assuming Shift+p for PRE_
+        setMacroString("PRE_");
+        return;
+      }
+      if (key === "v" && event.shiftKey) { // Assuming Shift+v for VOW_
+        setMacroString("VOW_");
+        return;
+      }
+      if (key === "o" && event.shiftKey) { // Assuming Shift+o for POS_
+        setMacroString("POS_");
+        return;
+      }
+
+      // Handle macro completion
+      if (macroString.startsWith("PRE_") && key !== "Shift") {
+        setPre(macroString.substring(4));
+        setMacroString("");
+        return;
+      } else if (macroString.startsWith("VOW_") && key !== "Shift") {
+        const vow_ = parseVietnameseString(macroString.substring(4));
+        setVow(vow_);
+        setTone("ngang");
+        setMacroString("");
+        return;
+      } else if (macroString.startsWith("POS_") && key !== "Shift") {
+        setPost(macroString.substring(4));
+        setMacroString("");
+        return;
+      }
+
+
       // Handle random syllable generation on Shift key press
       if (key === "Shift") {
-        event.preventDefault();
         generateRandomSyllable();
         return;
       }
 
       // Handle random word generation on Fn key press
       if (key === "ArrowRight") {
-        event.preventDefault();
         generateRandomWordFromDictionary();
         return;
       }
 
 
-      if (key.startsWith("PRE_")) {
-        setPre(key.replace("PRE_", ""));
-      } else if (key.startsWith("VOW_")) {
-        const vow_ = parseVietnameseString(key);
-        setVow(vow_);
-        setTone("ngang")
-      } else if (key.startsWith("POS_")) {
-        setPost(key.replace("POS_", ""));
-      } else if (key.startsWith("TONE_")) {
+      // Handle tone, post-consonant, and delete keys
+      if (key.startsWith("TONE_")) {
         setTone(key.replace("TONE_", ""));
       } else if (key === "DELETE_") {
         if (post != "") {
           setPost("");
-        } else {
-          if (vow != "") {
-            setVow("");
-          } else {
-            if (pre != "") {
-              setPre("");
-            }
-          }
+        } else if (vow != "") {
+          setVow("");
+        } else if (pre != "") {
+          setPre("");
         }
       } else if (key === "ArrowUp") {
-        event.preventDefault(); // Prevents page scrolling
         if (selectedIndex !== null && selectedIndex > 0) {
           updateSelection(selectedIndex - 1);
         }
       } else if (key === "ArrowDown") {
-        event.preventDefault(); // Prevents page scrolling
         if (selectedIndex !== null) {
-          // New logic: loop back to the first word if we are at the end
           if (selectedIndex === searchResults.length - 1) {
             updateSelection(0);
           } else {
@@ -359,12 +396,12 @@ const parseVietnameseString = (rawString: string) => {
         }
       }
     };
-
+    
     document.addEventListener("keydown", handleKeyDown);
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [selectedIndex, searchResults]);
+  }, [selectedIndex, searchResults, macroString]); 
 
   // ============================== UI COMPONENTS =============================== //
   const speak = (text: string) => {
