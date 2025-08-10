@@ -450,13 +450,13 @@ const generateRandomWordFromDictionary = () => {
       {/* Right panel */}
       <div id="right" className="w-1/2 p-2 m-1 flex flex-col gap-3 text-black">
         <div id="inputBox" className="h-1/5 bg-white border-1 rounded border-gray-300 p-2 flex flex-col gap-2">
-          <input
+          {/* <input
             type="text"
             value={syllable}
             onChange={(e) => setSyllable(e.target.value)}
             placeholder="Type syllable..."
             className="border border-gray-400 rounded px-2 py-1 w-full"
-          />
+          /> */}
           <div id="formedSyllable" className=" text-center flex flex-row p-2">
             <h1>{syllable}</h1>
             <button
