@@ -297,7 +297,7 @@ const generateRandomWordFromDictionary = () => {
     const handleKeyDown = (event: KeyboardEvent) => {
       const key = event.key;
       // Define our functional keys as an array for easy checking.
-      const functionalKeys = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "\\", "/", "@"];
+      const functionalKeys = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "\\", "/", "@", "Delete"];
 
       // Prevent default browser behavior for all functional keys.
       if (functionalKeys.includes(key)) {
@@ -320,6 +320,20 @@ const generateRandomWordFromDictionary = () => {
         return;
       }
 
+      if (key === "Delete") {
+        if (post != "") {
+          setPost("");
+        } else {
+          if (vow != "") {
+            setVow("");
+          } else {
+            if (pre != "") {
+              setPre("");
+            }
+          }
+        }
+      }
+
       // Handle up/down arrow for search results selection.
       if (key === "ArrowUp") {
         if (selectedIndex !== null && selectedIndex > 0) {
@@ -336,6 +350,7 @@ const generateRandomWordFromDictionary = () => {
         }
         return;
       }
+      
 
       // This is the new macro logic:
       // When the '@' key is pressed, we process the macro string.
