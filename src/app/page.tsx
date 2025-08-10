@@ -178,59 +178,52 @@ const generateRandomWordFromDictionary = () => {
     setTone(tempTone);
   };
 
-const parseVietnameseString = (rawString: string) => {
-  // Define your mapping of codes to Unicode characters.
-  // This object is the heart of the conversion logic.
-  const charMap: Record<
-    'a0' | 'a6' | 'a8' | 'e0' | 'e6' | 'i0' | 'o0' | 'o6' | 'o7' | 'u0' | 'u7' | 'y0',
-    string
-  > = {
-    'a0': 'a',
-    'a6': 'â',
-    'a8': 'ă',
-    'e0': 'e',
-    'e6': 'ê',
-    'i0': 'i',
-    'o0': 'o',
-    'o6': 'ô',
-    'o7': 'ơ',
-    'u0': 'u',
-    'u7': 'ư',
-    'y0': 'y',
-    // Add any other vowels or tones you might use.
-    // For example, if you have tones, you can add them here.
-    // 'sac': '́', // Sắc tone
-    // 'huyen': '̀', // Huyền tone
-    // etc.
-  };
+  const parseVietnameseString = (rawString: string) => {
+    // Define your mapping of codes to Unicode characters.
+    // This object is the heart of the conversion logic.
+    const charMap: Record<
+      'a0' | 'a6' | 'a8' | 'e0' | 'e6' | 'i0' | 'o0' | 'o6' | 'o7' | 'u0' | 'u7' | 'y0',
+      string
+    > = {
+      'a0': 'a',
+      'a6': 'â',
+      'a8': 'ă',
+      'e0': 'e',
+      'e6': 'ê',
+      'i0': 'i',
+      'o0': 'o',
+      'o6': 'ô',
+      'o7': 'ơ',
+      'u0': 'u',
+      'u7': 'ư',
+      'y0': 'y',
+    };
 
-  // Check if the input string is valid.
-  if (!rawString || typeof rawString !== 'string' || rawString.trim() === '') {
-    return '';
-  }
-
-  // Split the string by the underscore character to get the codes.
-  // For example, "VOW_e6_u0" becomes ["VOW", "e6", "u0"].
-  const parts = rawString.split('_');
-  
-  // The first part "VOW" is a prefix, so we ignore it and process the rest.
-  // We filter out any empty strings that might result from splitting.
-  const codes = parts.slice(1).filter(Boolean);
-
-  let finalWord = "";
-  for (const code of codes) {
-    if (charMap.hasOwnProperty(code)) {
-      finalWord += charMap[code as keyof typeof charMap];
-    } else {
-      // If a code is not found, you can decide what to do.
-      // Here, we just append the original code.
-      // You could also log a warning to the console.
-      finalWord += `[${code}]`;
+    // Check if the input string is valid.
+    if (!rawString || typeof rawString !== 'string' || rawString.trim() === '') {
+      return '';
     }
-  }
 
-  return finalWord;
-};
+    // Split the string by the underscore character to get the codes.
+    // For example, "e0_e6" becomes ["e0", "e6"].
+    const parts = rawString.split('_');
+    
+    // We filter out any empty strings that might result from splitting.
+    const codes = parts.filter(Boolean);
+
+    let finalWord = "";
+    for (const code of codes) {
+      if (charMap.hasOwnProperty(code)) {
+        finalWord += charMap[code as keyof typeof charMap];
+      } else {
+        // If a code is not found, you can decide what to do.
+        // Here, we just append the original code.
+        finalWord += `[${code}]`;
+      }
+    }
+
+    return finalWord;
+  };
 
   // ============================== EFFECT =============================== //
   useEffect(() => {
@@ -317,7 +310,7 @@ const parseVietnameseString = (rawString: string) => {
         key === "/" ||
         key === "ArrowUp" ||
         key === "ArrowDown" ||
-        key === "Backspace" ||
+        key === "@" || // <-- Updated to use @
         key.startsWith("PRE_") || 
         key.startsWith("VOW_") ||
         key.startsWith("POS_") ||
@@ -352,19 +345,17 @@ const parseVietnameseString = (rawString: string) => {
         return;
       }
 
-      // Handle macro completion
-      if (macroString.startsWith("PRE_") && key === "Backspace") { // Backspace to complete the macro
-        setPre(macroString.substring(4));
-        setMacroString("");
-        return;
-      } else if (macroString.startsWith("VOW_") && key === "Backspace") {
-        const vow_ = parseVietnameseString(macroString.substring(4));
-        setVow(vow_);
-        setTone("ngang");
-        setMacroString("");
-        return;
-      } else if (macroString.startsWith("POS_") && key === "Backspace") {
-        setPost(macroString.substring(4));
+      // Handle macro completion with the @ key
+      if (key === "@") { 
+        if (macroString.startsWith("PRE_")) {
+          setPre(macroString.substring(4));
+        } else if (macroString.startsWith("VOW_")) {
+          const vow_ = parseVietnameseString(macroString.substring(4));
+          setVow(vow_);
+          setTone("ngang");
+        } else if (macroString.startsWith("POS_")) {
+          setPost(macroString.substring(4));
+        }
         setMacroString("");
         return;
       }
