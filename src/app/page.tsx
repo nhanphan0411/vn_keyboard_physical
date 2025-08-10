@@ -296,86 +296,36 @@ const generateRandomWordFromDictionary = () => {
 
     const handleKeyDown = (event: KeyboardEvent) => {
       const key = event.key;
+      // Define our functional keys as an array for easy checking.
+      const functionalKeys = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "\\", "/", "@"];
 
-      // Check if a macro is being typed
-      if (macroString && key.length === 1) { // Check for single character keys to avoid capturing 'Shift'
-        event.preventDefault();
-        setMacroString(prev => prev + key);
-        return;
-      }
-      
-      // Prevent default browser behavior for random and macro-related keys
-      if (
-        key === "\\" ||
-        key === "/" ||
-        key === "ArrowUp" ||
-        key === "ArrowDown" ||
-        key === "@" || // <-- Updated to use @
-        key.startsWith("PRE_") || 
-        key.startsWith("VOW_") ||
-        key.startsWith("POS_") ||
-        key.startsWith("TONE_")
-      ) {
+      // Prevent default browser behavior for all functional keys.
+      if (functionalKeys.includes(key)) {
         event.preventDefault();
       }
 
-      // Handle random syllable generation with the "\" key
+      // Handle random syllable generation with the "\" key.
       if (key === "\\") {
         generateRandomSyllable();
+        // Clear the macro string when a new action is performed.
+        setMacroString("");
         return;
       }
 
-      // Handle smart random word generation with the "/" key
+      // Handle smart random word generation with the "/" key.
       if (key === "/") {
         generateRandomWordFromDictionary();
-        return;
-      }
-
-      // Start new macro sequences
-      if (key === "p" && event.shiftKey) { // Assuming Shift+p for PRE_
-        setMacroString("");
-        return;
-      }
-      if (key === "v" && event.shiftKey) { // Assuming Shift+v for VOW_
-        setMacroString("");
-        return;
-      }
-      if (key === "o" && event.shiftKey) { // Assuming Shift+o for POS_
+        // Clear the macro string when a new action is performed.
         setMacroString("");
         return;
       }
 
-      // Handle macro completion with the @ key
-      if (key === "@") { 
-        if (macroString.startsWith("PRE_")) {
-          setPre(macroString.substring(8));
-        } else if (macroString.startsWith("VOW_")) {
-          const vow_ = parseVietnameseString(macroString.substring(8));
-          setVow(vow_);
-          setTone("ngang");
-        } else if (macroString.startsWith("POS_")) {
-          setPost(macroString.substring(8));
-        }
-        setMacroString("");
-        return;
-      }
-
-
-      // Handle tone, post-consonant, and delete keys
-      if (key.startsWith("TONE_")) {
-        setTone(key.replace("TONE_", ""));
-      } else if (key === "DELETE_") {
-        if (post != "") {
-          setPost("");
-        } else if (vow != "") {
-          setVow("");
-        } else if (pre != "") {
-          setPre("");
-        }
-      } else if (key === "ArrowUp") {
+      // Handle up/down arrow for search results selection.
+      if (key === "ArrowUp") {
         if (selectedIndex !== null && selectedIndex > 0) {
           updateSelection(selectedIndex - 1);
         }
+        return;
       } else if (key === "ArrowDown") {
         if (selectedIndex !== null) {
           if (selectedIndex === searchResults.length - 1) {
@@ -384,6 +334,30 @@ const generateRandomWordFromDictionary = () => {
             updateSelection(selectedIndex + 1);
           }
         }
+        return;
+      }
+
+      // This is the new macro logic:
+      // When the '@' key is pressed, we process the macro string.
+      if (key === "@") {
+        if (macroString.startsWith("PRE_")) {
+          setPre(macroString.substring(4));
+        } else if (macroString.startsWith("VOW_")) {
+          const vow_ = parseVietnameseString(macroString.substring(4));
+          setVow(vow_);
+          setTone("ngang");
+        } else if (macroString.startsWith("POS_")) {
+          setPost(macroString.substring(4));
+        }
+        // Reset the macro string after processing.
+        setMacroString("");
+        return;
+      }
+      
+      // For all other single-character keys, add them to the macro string.
+      // This is the default behavior for all non-functional keys.
+      if (key.length === 1) {
+        setMacroString(prev => prev + key);
       }
     };
     
