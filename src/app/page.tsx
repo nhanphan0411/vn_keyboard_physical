@@ -333,28 +333,28 @@ const generateRandomWordFromDictionary = () => {
 
       // Start new macro sequences
       if (key === "p" && event.shiftKey) { // Assuming Shift+p for PRE_
-        setMacroString("PRE_");
+        setMacroString("");
         return;
       }
       if (key === "v" && event.shiftKey) { // Assuming Shift+v for VOW_
-        setMacroString("VOW_");
+        setMacroString("");
         return;
       }
       if (key === "o" && event.shiftKey) { // Assuming Shift+o for POS_
-        setMacroString("POS_");
+        setMacroString("");
         return;
       }
 
       // Handle macro completion with the @ key
       if (key === "@") { 
         if (macroString.startsWith("PRE_")) {
-          setPre(macroString.substring(4));
+          setPre(macroString.substring(8));
         } else if (macroString.startsWith("VOW_")) {
-          const vow_ = parseVietnameseString(macroString.substring(4));
+          const vow_ = parseVietnameseString(macroString.substring(8));
           setVow(vow_);
           setTone("ngang");
         } else if (macroString.startsWith("POS_")) {
-          setPost(macroString.substring(4));
+          setPost(macroString.substring(8));
         }
         setMacroString("");
         return;
