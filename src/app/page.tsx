@@ -313,17 +313,28 @@ const parseVietnameseString = (rawString: string) => {
       
       // Prevent default browser behavior for macro-related keys
       if (
-        key === "Shift" ||
-        key === "ArrowRight" ||
+        (key === "Shift" && (event.location === 1 || event.location === 2)) ||
         key === "ArrowUp" ||
         key === "ArrowDown" ||
         key === "Backspace" ||
-        key.startsWith("PRE_") || // This is no longer needed but for safety
+        key.startsWith("PRE_") || 
         key.startsWith("VOW_") ||
         key.startsWith("POS_") ||
         key.startsWith("TONE_")
       ) {
         event.preventDefault();
+      }
+
+      // Handle random syllable generation with Left Shift
+      if (key === "Shift" && event.location === 1) {
+        generateRandomSyllable();
+        return;
+      }
+
+      // Handle smart random word generation with Right Shift
+      if (key === "Shift" && event.location === 2) {
+        generateRandomWordFromDictionary();
+        return;
       }
 
       // Start new macro sequences
@@ -341,32 +352,19 @@ const parseVietnameseString = (rawString: string) => {
       }
 
       // Handle macro completion
-      if (macroString.startsWith("PRE_") && key !== "Shift") {
+      if (macroString.startsWith("PRE_")) {
         setPre(macroString.substring(4));
         setMacroString("");
         return;
-      } else if (macroString.startsWith("VOW_") && key !== "Shift") {
+      } else if (macroString.startsWith("VOW_")) {
         const vow_ = parseVietnameseString(macroString.substring(4));
         setVow(vow_);
         setTone("ngang");
         setMacroString("");
         return;
-      } else if (macroString.startsWith("POS_") && key !== "Shift") {
+      } else if (macroString.startsWith("POS_")) {
         setPost(macroString.substring(4));
         setMacroString("");
-        return;
-      }
-
-
-      // Handle random syllable generation on Shift key press
-      if (key === "Shift") {
-        generateRandomSyllable();
-        return;
-      }
-
-      // Handle random word generation on Fn key press
-      if (key === "ArrowRight") {
-        generateRandomWordFromDictionary();
         return;
       }
 
