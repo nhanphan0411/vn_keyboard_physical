@@ -358,19 +358,31 @@ const generateRandomWordFromDictionary = () => {
         if (macroString.startsWith("PRE_")) {
           const prePart = macroString.substring(4);
           if (prePart === "d9") {
-            setPre("đ");
+            if (pre!="đ") {
+              setPre("đ");
+            }
           } else {
-            setPre(prePart);
+            if (prePart!=pre){
+              setPre(prePart);
+            }
           }
         } else if (macroString.startsWith("VOW_")) {
           const vow_ = parseVietnameseString(macroString.substring(4));
-          setVow(vow_);
-          setTone("ngang");
+          if (vow_!=vow){
+            setVow(vow_);
+            setTone("ngang");
+          }
         } else if (macroString.startsWith("POS_")) {
-          setPost(macroString.substring(4));
+          const posPart = macroString.substring(4);
+          if (posPart != post) {
+            setPost(post);
+          }
+          
         } else if (macroString.startsWith("TONE_")) {
           const tonePart = macroString.substring(5);
-          setTone(tonePart);
+          if (tonePart!=tone) {
+            setTone(tonePart);
+          }
         }
         // Reset the macro string after processing.
         setMacroString("");
