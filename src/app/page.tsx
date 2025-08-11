@@ -147,7 +147,6 @@ const generateRandomWordFromDictionary = () => {
     // Pick a random word from the dictionary
     const randomEntry = getRandom(dictionary);
     const word = getRandom(randomEntry._word_.replace(/_/g, " ").trim().split(" "))
-    console.log(randomEntry)
 
     // Deconstruct the word into its parts
     let tempPre = "";
@@ -399,6 +398,9 @@ const generateRandomWordFromDictionary = () => {
           if (tonePart!=tone) {
             setTone(tonePart);
           }
+        } else if (macroString.startsWith("OK")) {
+          speak(syllable.replace(/_/g, " ").trim());
+          setMacroString("");
         }
         // Reset the macro string after processing.
         setMacroString("");
