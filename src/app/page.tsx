@@ -435,7 +435,7 @@ const generateRandomWordFromDictionary = () => {
         <h1><i>MAKE A VIET SYLLABLE.</i></h1>
 
         <div id="guide" className="py-1">
-          <img src="guide.svg" width="100%"></img>
+          <img src="guide.svg" width="80%"></img>
         </div>
 
 
