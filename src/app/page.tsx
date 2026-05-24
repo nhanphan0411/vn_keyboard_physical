@@ -22,9 +22,9 @@ export default function SyllableMatrix() {
   const [displayDescriptions, setDisplayDescriptions] = useState<string[]>([]);
   const [selectedWord, setSelectedWord] = useState<string | null>(null);
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
-  
-  // Create a ref to access the search results DOM element
-  const searchResultsRef = useRef<HTMLDivElement>(null); 
+  const [lang, setLang] = useState<"eng" | "viet">("eng");
+
+  const searchResultsRef = useRef<HTMLDivElement>(null);
 
   const [pre, setPre] = useState("");
   const [vow, setVow] = useState("");
@@ -134,14 +134,14 @@ export default function SyllableMatrix() {
     const randomVow = getRandom(vowels);
     const randomPost = Math.random() < 0.5 ? getRandom(postConsonants) : "";
     const randomTone = getRandom(tones);
-    
+
     setPre(randomPre);
     setVow(randomVow);
     setPost(randomPost);
     setTone(randomTone);
   };
 
-const generateRandomWordFromDictionary = () => {
+  const generateRandomWordFromDictionary = () => {
     if (dictionary.length === 0) return;
 
     // Pick a random word from the dictionary
@@ -173,7 +173,7 @@ const generateRandomWordFromDictionary = () => {
         break;
       }
     }
-    
+
     // Find the tone from the remaining vowel part
     const tonedChar = tempVowWithTone.split("").find(char => reverseToneMap[char]);
     if (tonedChar) {
@@ -222,7 +222,7 @@ const generateRandomWordFromDictionary = () => {
     // Split the string by the underscore character to get the codes.
     // For example, "e0_e6" becomes ["e0", "e6"].
     const parts = rawString.split('_');
-    
+
     // We filter out any empty strings that might result from splitting.
     const codes = parts.filter(Boolean);
 
@@ -365,7 +365,7 @@ const generateRandomWordFromDictionary = () => {
         }
         return;
       }
-      
+
 
       // This is the new macro logic:
       // When the '@' key is pressed, we process the macro string.
@@ -373,17 +373,17 @@ const generateRandomWordFromDictionary = () => {
         if (macroString.startsWith("PRE_")) {
           const prePart = macroString.substring(4);
           if (prePart === "d9") {
-            if (pre!="đ") {
+            if (pre != "đ") {
               setPre("đ");
             }
           } else {
-            if (prePart!=pre){
+            if (prePart != pre) {
               setPre(prePart);
             }
           }
         } else if (macroString.startsWith("VOW_")) {
           const vow_ = parseVietnameseString(macroString.substring(4));
-          if (vow_!=vow){
+          if (vow_ != vow) {
             setVow(vow_);
             setTone("ngang");
           }
@@ -392,10 +392,10 @@ const generateRandomWordFromDictionary = () => {
           if (posPart != post) {
             setPost(posPart);
           }
-          
+
         } else if (macroString.startsWith("TONE_")) {
           const tonePart = macroString.substring(5);
-          if (tonePart!=tone) {
+          if (tonePart != tone) {
             setTone(tonePart);
           }
         } else if (macroString.startsWith("OK")) {
@@ -406,19 +406,19 @@ const generateRandomWordFromDictionary = () => {
         setMacroString("");
         return;
       }
-      
+
       // For all other single-character keys, add them to the macro string.
       // This is the default behavior for all non-functional keys.
       if (key.length === 1) {
         setMacroString(prev => prev + key);
       }
     };
-    
+
     document.addEventListener("keydown", handleKeyDown);
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [selectedIndex, searchResults, macroString]); 
+  }, [selectedIndex, searchResults, macroString]);
 
   // ============================== UI COMPONENTS =============================== //
   const speak = (text: string) => {
@@ -432,18 +432,41 @@ const generateRandomWordFromDictionary = () => {
     <div className="flex h-screen text-sm p-1 gap-x-2 bg-black text-white">
       {/* Left panel */}
       <div id="left" className="w-1/2 p-2 rounded flex flex-col gap-1">
-        <h1><i>MAKE A VIET SYLLABLE.</i></h1>
+        <div className="flex">
+          <button
+            onClick={() => setLang(lang === "eng" ? "viet" : "eng")}
+            className="px-6 py-3 rounded border border-gray-400 text-md font-bold bg-gray-800 hover:bg-gray-700 transition-colors tracking-wide"
+          >
+            {lang === "eng" ? "CHUYỂN SANG TIẾNG VIỆT" : "TO ENGLISH INTERFACE"}
+          </button>
+        </div>
+        
+        <h1 className="mt-4"><i>{lang === "eng" ? "MAKE A VIET SYLLABLE" : "BÀN PHÍM TIẾNG VIỆT"}</i></h1>
+
+
 
         <div id="guide" className="py-1">
-          <img src="guide.svg" width="80%"></img>
+          <img src={lang === "eng" ? "guide_eng.svg" : "guide_vn.svg"} width="100%"></img>
         </div>
 
-
         <div id="project_description" className="rounded border-gray-300 py-2">
-          <p>Despite its alphabetic appearance, the structure of Vietnamese is deeply rooted in the structure of <br/><b>PRE_CONSONANT + VOWELS + POST_CONSONANT</b></p>
-          <p>This keyboard is an attempt to use our language in a more intuitive way, a way that treasure the vastness of our syllables, which bears the sound, the feeling, 
-            and the story of the Vietnamese. You can read the entire project at <b>codesurfing.club/OurVietnameseProject.</b>
-          </p>
+          {lang === "eng" ? (
+            <>
+              <br></br>
+              <p>Despite its alphabetic appearance, the structure of Vietnamese is deeply rooted in the structure of <br /><b>PRE_CONSONANT + VOWELS + POST_CONSONANT</b>             
+              . This keyboard is an attempt to use our language in a more intuitive way, a way that appreciates the abundance of our syllables, which holds the sound, the feeling,
+                and the story of the Vietnamese. You can read the entire project at <b>codesurfing.club/OurVietnameseProject.</b>
+              </p>
+            </>
+          ) : (
+            <>
+            <br></br>
+              <p>Căn tính tiếng Việt không nằm ở từng chữ cái alphabet, mà nằm ở từng âm tiết. Từ ngày bắt đầu tới lớp, ta viết tiếng Việt bằng công thức <br /><b>PHỤ ÂM ĐẦU + NGUYÊN ÂM + PHỤ ÂM CUỐI</b>
+              . Bàn phím này đề xuất một cách gõ tiếng Việt gần với tiếng Việt hơn — trân trọng sự phong phú của âm tiết Việt với âm sắc, cảm xúc
+                và câu chuyện của người Việt. Bạn có thể đọc toàn bộ dự án tại <b>codesurfing.club/OurVietnameseProject.</b>
+              </p>
+            </>
+          )}
         </div>
 
 
@@ -470,11 +493,11 @@ const generateRandomWordFromDictionary = () => {
           </div>
         </div>
 
-        <div id="searchResults" ref={searchResultsRef} className="h-2/5 bg-white rounded p-2 flex flex-col gap-1 overflow-y-auto border border-gray-300">       
+        <div id="searchResults" ref={searchResultsRef} className="h-2/5 bg-white rounded p-2 flex flex-col gap-1 overflow-y-auto border border-gray-300">
           {searchResults.map((result, resultIndex) => (
             Object.keys(result).map((word, wordIndex) => (
               <div key={`${resultIndex}-${wordIndex}`}>
-                <p 
+                <p
                   onClick={() => {
                     const all_descriptions = result[word][0]['description'];
 
@@ -490,8 +513,7 @@ const generateRandomWordFromDictionary = () => {
                     setSelectedIndex(resultIndex);
                   }}
                   className={
-                    `cursor-pointer hover:underline p-1 rounded transition-colors text-xl ${
-                      selectedIndex === resultIndex ? 'bg-blue-300' : ''
+                    `cursor-pointer hover:underline p-1 rounded transition-colors text-xl ${selectedIndex === resultIndex ? 'bg-blue-300' : ''
                     }`
                   }>
                   {word.replace(/_/g, " ").trim()}
